@@ -1,0 +1,2 @@
+# WixOracle
+Adaptador WIx - Oracle
