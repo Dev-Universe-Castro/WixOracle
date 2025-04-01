@@ -1,8 +1,0 @@
-{
-  "name": "@wix-velo/external-db-oracle",
-  "version": "3.0.0",
-  "type": "commonjs",
-  "dependencies": {
-    "oracledb": "^6.8.0"
-  }
-}
