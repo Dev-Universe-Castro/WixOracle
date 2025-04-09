@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico de Linha - Highcharts</title>
+    <!-- Inclua a biblioteca Highcharts -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+</head>
+<body>
+    <div id="container" style="width: 100%; height: 400px;"></div>
+    <script>
+        // Função para inicializar o gráfico
+        function initChart(data) {
+            // Criar o gráfico com Highcharts
+            Highcharts.chart('container', {
+                chart: {
+                    type: 'line' // Tipo de gráfico: linha
+                },
+                title: {
+                    text: data.title || 'Média de RPM do Moinho'
+                },
+                xAxis: {
+                    categories: data.labels, // Datas no eixo X
+                    title: {
+                        text: 'Data'
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'RPM Médio'
+                    }
+                },
+                series: [{
+                    name: 'RPM MÉDIO',
+                    data: data.datasets[0].data, // Dados da série (linha)
+                    type: 'line', // Gráfico de linha
+                    color: '#FF0000', // Cor vermelha
+                    marker: {
+                        fillColor: '#FF0000', // Cor dos marcadores da linha (vermelho)
+                        symbol: 'circle',
+                        radius: 4
+                    }
+                }], // Dados das séries (linha)
+                tooltip: {
+                    shared: true, // Mostrar informações de todas as séries no tooltip
+                    useHTML: true,
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                                 '<td style="padding:0"><b>{point.y:.2f}</b></td></tr>', // Duas casas decimais
+                    footerFormat: '</table>'
+                },
+                plotOptions: {
+                    line: {
+                        lineWidth: 2, // Espessura da linha
+                        marker: {
+                            enabled: true, // Habilitar marcadores na linha
+                            radius: 4
+                        }
+                    }
+                }
+            });
+        }
+
+        // Receber dados do back-end
+        window.addEventListener('message', (event) => {
+            const data = event.data;
+            if (data && data.datasets) {
+                initChart(data);
+            }
+        });
+
+        // Informar ao back-end que o front-end está pronto
+        window.parent.postMessage({ type: 'ready' }, '*');
+    </script>
+</body>
+</html>
