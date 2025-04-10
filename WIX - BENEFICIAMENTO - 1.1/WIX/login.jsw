@@ -1,0 +1,30 @@
+import wixData from 'wix-data';
+
+export async function logar(usuario, senha) {
+
+    let login = {"logado":false,"usuario":""}
+
+    await wixData.query("USUARIO")
+        .eq("usuario", usuario)
+        .find()
+        .then(async (resultado) => {
+
+            let $senha = resultado.items[0].senha
+            if (resultado.items.length > 0) {
+                if ($senha === senha) {
+                    login.logado = await true;
+                    login.usuario = resultado.items[0]
+                }else{
+                    console.log("errou senha")
+                }
+            }
+
+        })
+        .catch((erro)=>{
+            console.log("errou email");
+            
+        })
+
+    return login
+
+}
